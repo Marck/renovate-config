@@ -8,5 +8,6 @@
         }
       ],
     "automergeType": "branch",
-    "ignoreTests":  true
+    "ignoreTests": true,
+    "rollbackPrs": true
 }
