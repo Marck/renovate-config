@@ -4,10 +4,10 @@
     "packageRules": [
         {
           "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-          "automerge": true
+          "automerge": true,
+          "rollbackPrs": true
         }
       ],
     "automergeType": "branch",
-    "ignoreTests": true,
-    "rollbackPrs": true
+    "ignoreTests": true
 }
