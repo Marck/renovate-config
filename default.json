@@ -1,3 +1,11 @@
 {
-    "reviewers": ["marck"]
+    "reviewers": "marck",
+    "labels": "renovate",
+    "packageRules": [
+        {
+          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+          "automerge": true
+        }
+      ],
+    "automergeType": "branch"
 }
