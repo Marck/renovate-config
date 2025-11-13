@@ -1,6 +1,7 @@
 {
+    "dependencyDashboard": false,
     "reviewers": "Marck",
-    "labels": "renovate",
+    "labels": ["renovate"],
     "packageRules": [
         {
           "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
