@@ -10,5 +10,6 @@
         }
       ],
     "automergeType": "branch",
-    "ignoreTests": true
+    "ignoreTests": true,
+    "minimumReleaseAge": "10 days"
 }
