@@ -6,10 +6,10 @@
         {
           "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
           "automerge": true,
-          "rollbackPrs": true
+          "rollbackPrs": true,
+          "minimumReleaseAge": "10 days"
         }
       ],
     "automergeType": "branch",
-    "ignoreTests": true,
-    "minimumReleaseAge": "10 days"
+    "ignoreTests": true
 }
