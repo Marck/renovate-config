@@ -2,12 +2,12 @@
     "dependencyDashboard": false,
     "reviewers": "Marck",
     "labels": ["renovate"],
+    "minimumReleaseAge": "10 days",
     "packageRules": [
         {
           "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
           "automerge": true,
-          "rollbackPrs": true,
-          "minimumReleaseAge": "10 days"
+          "rollbackPrs": true
         }
       ],
     "automergeType": "branch",
