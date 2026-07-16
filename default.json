@@ -1,5 +1,5 @@
 {
-    "dependencyDashboard": false,
+    "dependencyDashboard": true,
     "reviewers": "Marck",
     "labels": ["renovate"],
     "minimumReleaseAge": "10 days",
