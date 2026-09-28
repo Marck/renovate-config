@@ -1,0 +1,21 @@
+name: validate
+
+# The preset shipped two invalid settings unnoticed (`reviewers` as a string,
+# `rollbackPrs` inside a `matchUpdateTypes` rule). Renovate reports those as a
+# config error in every consuming repo, not here, so validate on every push.
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  renovate-config-validator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validate default.json
+        run: npx --yes --package renovate renovate-config-validator --strict default.json
