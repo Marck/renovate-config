@@ -1,15 +1,16 @@
 {
     "dependencyDashboard": true,
-    "reviewers": "Marck",
+    "reviewers": ["Marck"],
     "labels": ["renovate"],
     "minimumReleaseAge": "10 days",
+    "minimumReleaseAgeBehaviour": "timestamp-optional",
     "packageRules": [
         {
           "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-          "automerge": true,
-          "rollbackPrs": true
+          "automerge": true
         }
       ],
+    "rollbackPrs": true,
     "automergeType": "branch",
     "ignoreTests": true
 }
