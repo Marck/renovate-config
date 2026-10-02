@@ -1,8 +1,12 @@
 {
   "dependencyDashboard": true,
-  "reviewers": ["Marck"],
+  "reviewers": [
+    "Marck"
+  ],
   "assignAutomerge": true,
-  "labels": ["renovate"],
+  "labels": [
+    "renovate"
+  ],
   "minimumReleaseAge": "10 days",
   "minimumReleaseAgeBehaviour": "timestamp-optional",
   "rollbackPrs": true,
@@ -12,14 +16,40 @@
   "packageRules": [
     {
       "description": "Minor, patch, pin and digest automerge once CI is green. The gate is minimumReleaseAge plus a passing test run, not a human. This used to be automergeType: branch with ignoreTests: true, which merged straight to the base branch without a PR and without running anything: no PR meant no reviewer, no record and no test. A repo with no CI at all has to set ignoreTests: true for itself, because a branch with no status check and no check run resolves to yellow and would never automerge.",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true
     },
     {
       "description": "A major is never automerged, in any manager or repo. It requests a review instead, and that request is the notification that one is waiting. Majors are where upstream notes change what you do, so they stay a decision.",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false,
-      "addLabels": ["major-review"]
+      "addLabels": [
+        "major-review"
+      ]
+    },
+    {
+      "description": "GitHub Actions bump at every update type, major included, so this rule sits after the major rule above and wins for the github-actions manager. A workflow action is not a running service: it cannot reach a cluster, it has no data to migrate, and the blast radius of a bad one is a red CI run on the PR that introduced it, which is the thing that blocks the merge in the first place. Treating a major here as a decision only buys a queue of actions/checkout bumps nobody reads.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true,
+      "addLabels": [
+        "github-action"
+      ]
     }
   ]
 }
