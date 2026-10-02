@@ -21,6 +21,7 @@ Shared Renovate preset for my repositories. Consume it with:
 | `assignAutomerge` | `true` | Renovate skips reviewers on PRs it means to automerge unless this is on, which is why automerged PRs arrived with nobody requested. |
 | minor / patch / pin / digest | automerge | Gated on `minimumReleaseAge` plus a green run. |
 | major | no automerge, label `major-review` | The review request is the notification. |
+| `github-actions`, any update type | automerge, label `github-action` | A workflow action reaches no cluster and migrates no data. A bad one shows up as a red run on the PR that introduced it, which is what blocks the merge anyway, so a major here is not a decision worth queueing. This rule is last, so it wins over the major rule above. |
 | `dependencyDashboard` | `true` | One issue per repo listing everything held back, with checkboxes to force a branch now. |
 
 ## Validating a change
