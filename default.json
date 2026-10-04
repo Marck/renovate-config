@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "config:recommended"
+  ],
   "dependencyDashboard": true,
   "reviewers": [
     "Marck"
@@ -10,12 +13,12 @@
   "minimumReleaseAge": "10 days",
   "minimumReleaseAgeBehaviour": "timestamp-optional",
   "rollbackPrs": true,
-  "automergeType": "pr",
+  "automergeType": "branch",
   "ignoreTests": false,
   "platformAutomerge": false,
   "packageRules": [
     {
-      "description": "Minor, patch, pin and digest automerge once CI is green. The gate is minimumReleaseAge plus a passing test run, not a human. This used to be automergeType: branch with ignoreTests: true, which merged straight to the base branch without a PR and without running anything: no PR meant no reviewer, no record and no test. A repo with no CI at all has to set ignoreTests: true for itself, because a branch with no status check and no check run resolves to yellow and would never automerge.",
+      "description": "Minor, patch, pin and digest automerge once CI is green, straight to the base branch with no PR (automergeType: branch above). The gate is minimumReleaseAge plus a passing test run on the renovate/ branch, so the repo's CI has to run on push to renovate/**. A red run, or checks still pending after prNotPendingHours (25), makes Renovate open a PR instead, so a PR always means a human is needed. A repo with no CI at all has to set ignoreTests: true for itself, because a branch with no status check and no check run resolves to yellow and would only ever surface as a PR after 25 hours.",
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -25,7 +28,7 @@
       "automerge": true
     },
     {
-      "description": "A major is never automerged, in any manager or repo. It requests a review instead, and that request is the notification that one is waiting. Majors are where upstream notes change what you do, so they stay a decision.",
+      "description": "A major is never automerged, in any manager or repo, so it is the one update type that always gets a PR. It requests a review, and that request is the notification that one is waiting. Majors are where upstream notes change what you do, so they stay a decision.",
       "matchUpdateTypes": [
         "major"
       ],
@@ -51,5 +54,11 @@
         "github-action"
       ]
     }
+  ],
+  "dependencyDashboardTitle": "Renovate dependency dashboard",
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 2,
+  "description": [
+    "prConcurrentLimit is 0 (unlimited) instead of Renovate's default of 10, and prHourlyLimit is written out at its default of 2 so PR creation is still paced. The default caps how many updates may be open at once, and a manual update only leaves the queue when someone merges it by hand. Once the cap is reached every other update is silently starved: ghcr.io/linuxserver/homeassistant sat two minor releases behind with its bump parked under Rate-Limited on the dependency dashboard, no PR and no notification. branchConcurrentLimit stays unset so it inherits the 0."
   ]
 }

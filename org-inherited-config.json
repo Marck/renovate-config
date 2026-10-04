@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Applied by the Mend Renovate app to every repo it is installed on. Only sets onboardingConfig, so a new repo's onboarding PR proposes the shared preset instead of plain config:recommended. Onboarded repos already extend the preset in their own renovate.json.",
+  "onboardingConfig": {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["local>Marck/renovate-config"]
+  }
+}
