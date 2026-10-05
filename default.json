@@ -53,6 +53,38 @@
       "addLabels": [
         "github-action"
       ]
+    },
+    {
+      "description": "A major in a release or publish workflow is a decision again, even for github-actions. Those workflows run on a push to main only, so the CI run on the renovate/ branch never executes the step that changed, and the first run that does is the release itself. This rule sits after the github-actions rule so it wins.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchFileNames": [
+        ".github/workflows/release*.yml",
+        ".github/workflows/release*.yaml",
+        ".github/workflows/publish*.yml",
+        ".github/workflows/publish*.yaml"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "addLabels": [
+        "major-review"
+      ]
+    },
+    {
+      "description": "A runner image major (macos-15 to macos-26, ubuntu-24.04 to 26.04) is not an action bump: it swaps the toolchain that builds what ships, Xcode included, so it is a decision like any other major. Comes after the github-actions rule so it wins.",
+      "matchDatasources": [
+        "github-runners"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "addLabels": [
+        "major-review"
+      ]
     }
   ],
   "dependencyDashboardTitle": "Renovate dependency dashboard",

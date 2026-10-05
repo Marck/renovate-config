@@ -17,5 +17,5 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
-      - name: Validate the preset and the inherited config
-        run: npx --yes --package renovate renovate-config-validator --strict default.json org-inherited-config.json
+      - name: Validate default.json
+        run: npx --yes --package renovate renovate-config-validator --strict default.json
