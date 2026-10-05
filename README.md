@@ -24,14 +24,16 @@ The preset extends `config:recommended` itself, so a repo does not need to.
 | `assignAutomerge` | `true` | Renovate skips reviewers on PRs it means to automerge unless this is on, which is why automerged PRs arrived with nobody requested. |
 | minor / patch / pin / digest | automerge | Gated on `minimumReleaseAge` plus a green run. |
 | major | no automerge, label `major-review` | The review request is the notification. |
-| `github-actions`, any update type | automerge, label `github-action` | A workflow action reaches no cluster and migrates no data. A bad one shows up as a red run on the PR that introduced it, which is what blocks the merge anyway, so a major here is not a decision worth queueing. This rule is last, so it wins over the major rule above. |
+| `github-actions`, any update type | automerge, label `github-action` | A workflow action reaches no cluster and migrates no data. A bad one shows up as a red run on the PR that introduced it, which is what blocks the merge anyway, so a major here is not a decision worth queueing. This rule comes after the major rule above, so it wins. |
+| major in `release*` / `publish*` workflows | no automerge, label `major-review` | Those run on main only, so branch CI never executes the changed step. |
+| `github-runners` major | no automerge, label `major-review` | A runner image swaps the toolchain (Xcode included), it is not an action bump. |
 | `dependencyDashboard` | `true` | One issue per repo listing everything held back, with checkboxes to force a branch now. |
 | `prConcurrentLimit` / `prHourlyLimit` | `0` / `2` | No cap on open updates, so a manual PR left open cannot starve unrelated ones; creation stays paced at 2 an hour. |
 
 ## Validating a change
 
 ```sh
-npx --yes --package renovate@latest renovate-config-validator --strict default.json org-inherited-config.json
+npx --yes --package renovate@latest renovate-config-validator --strict default.json
 ```
 
 CI runs the same command. Validate before pushing: an invalid preset surfaces as a
@@ -47,10 +49,9 @@ the update sits for 25 hours and then opens a PR anyway. Trigger on
 
 ## New repos
 
-`org-inherited-config.json` is applied by the Mend Renovate app to every repo it
-is installed on. It only sets `onboardingConfig`, so a new repo's onboarding PR
-proposes this preset instead of plain `config:recommended`. The app has to be
-installed on this repo for it to be read.
+Renovate's onboarding looks for `Marck/renovate-config` itself and, when it
+exists, proposes `"extends": ["local>Marck/renovate-config"]` in every
+onboarding PR. Nothing to configure.
 
 ## Repos with no CI
 
