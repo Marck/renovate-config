@@ -30,10 +30,40 @@ The preset extends `config:recommended` itself, so a repo does not need to.
 | `dependencyDashboard` | `true` | One issue per repo listing everything held back, with checkboxes to force a branch now. |
 | `prConcurrentLimit` / `prHourlyLimit` | `0` / `2` | No cap on open updates, so a manual PR left open cannot starve unrelated ones; creation stays paced at 2 an hour. |
 
+## Weekly batch (opt-in): `batch.json`
+
+For repos where every Renovate commit costs metered Actions minutes (private
+repos with CI on `renovate/**`). Extend it after the base preset:
+
+```json
+{
+  "extends": ["local>Marck/renovate-config", "local>Marck/renovate-config:batch"]
+}
+```
+
+| Option | Value | Why |
+| --- | --- | --- |
+| non-major `groupName` | `all non-major` | Every non-major update in one branch, `renovate/all-non-major`, so CI runs once per window instead of once per dependency. Majors keep their own branches. |
+| `schedule` | `["* * * * 1"]` (Monday) | **The speed knob.** Change it here for every repo, or set `schedule` in one repo's `renovate.json` to override it there. Twice a week: `["* * * * 1,4"]`; every night: `["* 0-6 * * *"]`. |
+| `timezone` | `Europe/Amsterdam` | The schedule is in local time. |
+| `updateNotScheduled` | `false` | An open branch is not rebased outside the window (each rebase is a CI run). Automerge is skipped outside the window too, so keep the window several hours long. |
+
+Used by `helm-charts`, `hass-config`, `arrmada`, `mira-app` and `keepalived`.
+
+- A group automerges only when every update in it may. A dependency with
+  `automerge: false` must get its own `groupName` in that repo, or it holds the
+  whole batch back (`helm-charts` does this for `argo-cd`, `keepalived` for
+  `keepalived`).
+- Security updates skip the schedule and the group (Renovate's default for
+  `vulnerabilityAlerts`, when Dependabot alerts are enabled).
+- Need one update before the window? Tick it under "Awaiting Schedule" on the
+  dependency dashboard. The branch is created on the next run and automerges in
+  the next window.
+
 ## Validating a change
 
 ```sh
-npx --yes --package renovate@latest renovate-config-validator --strict default.json
+npx --yes --package renovate@latest renovate-config-validator --strict default.json batch.json
 ```
 
 CI runs the same command. Validate before pushing: an invalid preset surfaces as a

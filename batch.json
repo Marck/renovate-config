@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Opt-in batching for repos where every Renovate commit costs metered Actions minutes (private repos). Extend it after the base preset: \"extends\": [\"local>Marck/renovate-config\", \"local>Marck/renovate-config:batch\"].",
+    "Every non-major update goes into one branch, renovate/all-non-major, created only on the days in schedule, so CI runs once per window instead of once per dependency. Majors keep their own branches and PRs, on the same days. Security updates ignore the schedule and the group (Renovate's vulnerabilityAlerts default, when Dependabot alerts are enabled).",
+    "The schedule is the speed knob. Change it here for every repo that extends this preset, or set schedule in one repo's renovate.json to override it there. Twice a week: [\"* * * * 1,4\"]. Every night: [\"* 0-6 * * *\"]. Ticking an update under Awaiting Schedule on the dependency dashboard creates its branch on the next run, but it still automerges in the next window (see below).",
+    "updateNotScheduled is false, so outside the window an open branch is not rebased or updated: each rebase would be another CI run. Renovate then skips the branch entirely, automerge included, which is why the window is a whole day: creating the branch, the CI run and the automerge take several Renovate runs.",
+    "A group automerges only when every update in it may (Renovate: config.automerge = upgrades.every(u => u.automerge)). One dependency with automerge: false would hold the whole batch back for review, so give it its own groupName in that repo's packageRules."
+  ],
+  "timezone": "Europe/Amsterdam",
+  "schedule": ["* * * * 1"],
+  "updateNotScheduled": false,
+  "packageRules": [
+    {
+      "description": "One branch for every non-major update in the repo. An additionalBranchPrefix set by a repo rule (helm-charts gives adguard and unifi-os-server their own) still splits it, since the group branch name is prefix + additionalBranchPrefix + groupSlug.",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "groupName": "all non-major",
+      "groupSlug": "all-non-major"
+    }
+  ]
+}

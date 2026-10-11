@@ -17,5 +17,5 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
-      - name: Validate default.json
-        run: npx --yes --package renovate renovate-config-validator --strict default.json
+      - name: Validate the presets
+        run: npx --yes --package renovate renovate-config-validator --strict default.json batch.json
