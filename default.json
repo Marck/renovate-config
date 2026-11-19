@@ -43,6 +43,30 @@
       ]
     },
     {
+      "description": "Language runtime images (python, node) treat a minor as a major: Python 3.x minors remove stdlib modules and Node minors change runtime defaults, so an untested image should not automerge. Same handling as any major: no automerge, review requested. Sits before the github-actions rule, so setup-node and setup-python versions in workflows still automerge.",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "python",
+        "node",
+        "library/python",
+        "library/node",
+        "docker.io/python",
+        "docker.io/node",
+        "docker.io/library/python",
+        "docker.io/library/node"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "automerge": false,
+      "addLabels": [
+        "major-review"
+      ]
+    },
+    {
       "description": "CI updates automerge at every update type, major included, so this rule sits after the major rule above and wins for the github-actions manager. That covers actions, runner images (github-runners datasource) and release or publish workflows alike, and it automerges on the branch like any non-major. A broken CI bump shows up as a red run, which blocks the merge; release and publish workflows only run after the merge, so a bad major there surfaces at the next release, an accepted trade-off. Actions are pinned to digests (helpers:pinGitHubActionDigests) so a moved tag cannot change what runs.",
       "matchManagers": [
         "github-actions"

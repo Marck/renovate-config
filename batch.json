@@ -16,6 +16,14 @@
       "matchUpdateTypes": ["minor", "patch", "pin", "digest", "pinDigest"],
       "groupName": "all non-major",
       "groupSlug": "all-non-major"
+    },
+    {
+      "description": "Runtime image minors (python, node) are held for review by the base preset, so they get their own group. In the all-non-major group they would hold every other update back.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["python", "node", "library/python", "library/node", "docker.io/python", "docker.io/node", "docker.io/library/python", "docker.io/library/node"],
+      "matchUpdateTypes": ["minor"],
+      "groupName": "language runtime",
+      "groupSlug": "language-runtime"
     }
   ]
 }
