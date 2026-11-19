@@ -24,6 +24,7 @@ The preset extends `config:recommended` itself, so a repo does not need to.
 | `assignAutomerge` | `true` | Renovate skips reviewers on PRs it means to automerge unless this is on, which is why automerged PRs arrived with nobody requested. |
 | minor / patch / pin / digest / pinDigest | automerge | Gated on `minimumReleaseAge` plus a green run. |
 | major | no automerge, label `major-review` | The review request is the notification. |
+| `python` / `node` image minor | no automerge, label `major-review` | A runtime minor removes or changes stdlib behaviour, so it is a major in practice. |
 | `github-actions`, any update type | automerge on branch, label `github-action` | Covers actions, runner images and release or publish workflows. A bad bump shows up as a red run, which blocks the merge. Release and publish workflows only run after the merge, so a bad major there surfaces at the next release; accepted. Comes after the major rule, so it wins. |
 | `dependencyDashboard` | `enabled`, title `Renovate dependency dashboard` | One issue per repo listing everything held back, with checkboxes to force a branch now. |
 | `prConcurrentLimit` / `prHourlyLimit` | `0` / `2` | No cap on open updates, so a manual PR left open cannot starve unrelated ones; creation stays paced at 2 an hour. |
