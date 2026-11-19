@@ -13,7 +13,7 @@
   "packageRules": [
     {
       "description": "One branch for every non-major update in the repo. An additionalBranchPrefix set by a repo rule (helm-charts gives adguard and unifi-os-server their own) still splits it, since the group branch name is prefix + additionalBranchPrefix + groupSlug.",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "pinDigest"],
       "groupName": "all non-major",
       "groupSlug": "all-non-major"
     }

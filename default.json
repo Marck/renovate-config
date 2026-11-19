@@ -27,7 +27,8 @@
         "minor",
         "patch",
         "pin",
-        "digest"
+        "digest",
+        "pinDigest"
       ],
       "automerge": true
     },
@@ -51,7 +52,8 @@
         "minor",
         "patch",
         "pin",
-        "digest"
+        "digest",
+        "pinDigest"
       ],
       "automerge": true,
       "addLabels": [
