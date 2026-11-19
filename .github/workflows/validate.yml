@@ -6,8 +6,19 @@ name: validate
 on:
   push:
     branches: ["**"]
-  pull_request:
-    branches: [main]
+    paths: ["*.json", ".github/workflows/validate.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned: an unpinned `npx renovate` silently resolved to v37 on a Node it
+  # did not support, which rejects options the preset uses. Renovate bumps
+  # this through customManagers:githubActionsVersions.
+  # renovate: datasource=npm depName=renovate
+  RENOVATE_VERSION: 44.252.8
 
 jobs:
   renovate-config-validator:
@@ -16,6 +27,6 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: "26"
+          node-version: "24"
       - name: Validate the presets
-        run: npx --yes --package renovate renovate-config-validator --strict default.json batch.json
+        run: npx --yes --package "renovate@${RENOVATE_VERSION}" renovate-config-validator --strict default.json batch.json renovate.json
